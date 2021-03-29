@@ -18,10 +18,7 @@ import com.viatom.demo.spotcheckm.ble.BleMsg
 import com.viatom.demo.spotcheckm.ble.BleMsgUtils
 import com.viatom.demo.spotcheckm.ble.KtBleService
 import com.viatom.demo.spotcheckm.event.PcEvent
-import com.viatom.demo.spotcheckm.objs.PcBpData
-import com.viatom.demo.spotcheckm.objs.PcBpResult
-import com.viatom.demo.spotcheckm.objs.PcStatus
-import com.viatom.demo.spotcheckm.objs.Spo2Param
+import com.viatom.demo.spotcheckm.objs.*
 import com.viatom.qqexpr.ble.BleCmd
 import com.viatom.qqexpr.ble.objs.Bluetooth
 import com.viatom.qqexpr.data.GlobalData
@@ -114,6 +111,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
         KtBleService.startService(applicationContext)
         mHandler = Handler(Looper.getMainLooper())
         scan.initScan(this)
@@ -265,6 +263,9 @@ class MainActivity : AppCompatActivity() {
 
                 }, 10000L)
             }
+        } else if(BleCmd.getMsgType(Bluetooth.MODEL_PC100, response.bytes) == BleCmd.PcCmd.CMD_TYPE_GET_DEVICE_INFO) {
+            val deviceInfo = PcDeviceInfo(response.bytes)
+            Log.e("aadfs",deviceInfo.swVer.toString())
         }
     }
 
@@ -272,6 +273,10 @@ class MainActivity : AppCompatActivity() {
     private fun bindService() {
         val intent = Intent(this, KtBleService::class.java)
         bindService(intent, connection, Context.BIND_AUTO_CREATE)
+    }
+
+    fun ga(view: View) {
+        BleMsgUtils.sendMsg(mClient, mService!!, BleMsg.MSG_SEND_CMD, BleCmd.PcCmd.CMD_TYPE_GET_DEVICE_INFO, false)
     }
 
 }
