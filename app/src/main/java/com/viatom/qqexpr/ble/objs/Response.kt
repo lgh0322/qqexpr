@@ -21,7 +21,6 @@ object Response {
     }
 
     fun hasResponse(bytes: ByteArray?, model: Int): ByteArray? {
-        Log.d("response:$model", model.toString());
         return when(model) {
             Bluetooth.MODEL_PC100 -> {
                 pc100(bytes)

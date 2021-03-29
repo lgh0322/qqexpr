@@ -17,6 +17,7 @@ import android.widget.TextView
 import com.viatom.demo.spotcheckm.ble.BleMsg
 import com.viatom.demo.spotcheckm.ble.BleMsgUtils
 import com.viatom.demo.spotcheckm.ble.KtBleService
+import com.viatom.demo.spotcheckm.event.BleDiscoverEvent
 import com.viatom.demo.spotcheckm.event.PcEvent
 import com.viatom.demo.spotcheckm.objs.*
 import com.viatom.qqexpr.ble.BleCmd
