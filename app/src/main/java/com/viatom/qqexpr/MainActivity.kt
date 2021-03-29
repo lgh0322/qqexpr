@@ -217,7 +217,15 @@ class MainActivity : AppCompatActivity() {
         } else if(response.token == BleCmd.PcCmd.TOKEN_BP_RT_DATA) { // BP Real-time value
             val bpData = PcBpData(response.bytes)
             mHandler.post {
-
+                val progressValue = when {
+                    bpData.bpValue < 10 -> bpData.bpValue * 50 / 10
+                    bpData.bpValue < 50 -> 50 + ((bpData.bpValue - 10) * 50.0f / 40.0f).toInt()
+                    else -> {
+                        100 + (bpData.bpValue - 50)
+                    }
+                }
+                Log.e("xx",progressValue.toString())
+                Log.e("yy","${bpData.bpValue}")
             }
         } else if(BleCmd.getMsgType(Bluetooth.MODEL_PC100, response.bytes) == BleCmd.PcCmd.CMD_TYPE_BP_START) {
             // BleCmd.PcCmd.TOKEN_BP_MODULE_STATE 0x40
@@ -238,6 +246,9 @@ class MainActivity : AppCompatActivity() {
                 val bpResult = PcBpResult(response.bytes)
                 needShowResult = true
                 mHandler.post {
+
+                    Log.e("fuckwsmslgh","haohao   ${bpResult.sys}       ${bpResult.dia}      ${bpResult.bmp}")
+
 
                 }
                 mHandler.postDelayed(Runnable {
